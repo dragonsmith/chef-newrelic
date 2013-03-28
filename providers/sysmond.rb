@@ -21,8 +21,8 @@
 
 action :install do
   nr_repo = apt_repository "newrelic" do
-    distribution node['newrelic']['apt']['di
-    uri node['newrelic']['apt']['repo']stribution']
+    distribution node['newrelic']['apt']['distribution']
+    uri node['newrelic']['apt']['repo']
     components node['newrelic']['apt']['components']
     key node['newrelic']['apt']['keyfile']
   end

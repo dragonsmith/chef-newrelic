@@ -60,6 +60,7 @@ action :configure do
   end
 
   nr_temp = template "/etc/newrelic/nrsysmond.cfg" do
+    cookbook 'newrelic'
     source "nrsysmond.cfg.erb"
     owner "root"
     group "newrelic"

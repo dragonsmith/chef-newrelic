@@ -42,7 +42,7 @@ action :configure do
   bad_invocations = all_newrelic_res.select do |resource|
     resource.key != all_newrelic_res.first.key
   end.count
-  
+
   if bad_invocations > 0
     Chef::Log.warn("Resource #{new_resource} was invoked with different license keys for #{bad_invocations+1} times. This can break your system configuration!!! Please, be careful!!!")
   end
@@ -93,7 +93,7 @@ action :disable do
 end
 
 action :uninstall do
-  nr_pack = package node['newrelic']['package_name'] do 
+  nr_pack = package node['newrelic']['package_name'] do
     action :uninstall
   end
 

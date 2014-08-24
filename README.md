@@ -2,6 +2,8 @@
 
 Installs Newrelic system monitor daemon.
 
+Main feature is that LWPR for newrelica sysmond installation will **not** show your license key to Chef log files.
+
 # Attributes
 
 * `node['newrelic']['package_name']` Name of package that will be insalled. Default: `newrelic-sysmond`
@@ -10,14 +12,14 @@ Installs Newrelic system monitor daemon.
 * `node['newrelic']['apt']['distribution']` Apt disctribution option.
 * `node['newrelic']['apt']['components']` Apt components option.
 
-Next attributes are only for 'recipe[newrelic::install]'. You do not need then if you want to use LWRPs.
+Next attributes are only for 'recipe[newrelic::install]'. You do not need them if you want to use LWRPs.
 
 * `node['newrelic']['license_key']` Newrelic license key to access api.
 * `node['newrelic']['enabled']` Allows "recipe[newrelic::install]" to install and configure newrelic. Default: `false`
 
 # Recipes
 
-## default 
+## default
 
 Empty recipe for you. Just to be sure LWRPs are accessible.
 
@@ -46,11 +48,41 @@ If you do not want to use LWRP than set attributes and use this recipe.
 newrelic_sysmond 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 ```
 
+# Useful templates
+
+Sorry, no sugar here yet.
+
+## rails.yml.erb
+
+Default template for rails gem configuration.
+
+Configurable variables:
+
+* `license_key` License key. **Required.**
+* `app_name` Application name to be shown in dashboard. Default value: *Default*
+* `log_level` Default value: *info*
+* `ssl` Default value: *true*
+* `apdex_t` Default value: *0.5*
+
+```ruby
+template "#{node['rails_application_path']}/config/newrelic.yml" do
+  owner node['rails_application']['user']
+  group node['rails_application']['group']
+  mode 0644
+  source 'rails.yml.erb'
+  cookbook 'newrelic'
+  variables (
+    license_key: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    app_name: node['project_name']
+  )
+end
+```
+
 # License and Authors
 
 * Kirill Kouznetsov <agon.smith@gmail.com>
 
-Copyright 2013, Kirill Kouznetsov
+Copyright 2014, Kirill Kouznetsov
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

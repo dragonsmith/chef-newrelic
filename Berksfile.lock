@@ -1,0 +1,9 @@
+DEPENDENCIES
+  newrelic
+    path: .
+    metadata: true
+
+GRAPH
+  apt (2.8.1)
+  newrelic (0.1.5)
+    apt (>= 0.0.0)

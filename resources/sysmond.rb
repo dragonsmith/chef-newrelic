@@ -4,7 +4,7 @@
 #
 # Author:: Kirill Kouznetsov <agon.smith@gmail.com>
 #
-# Copyright 2013, Kirill Kouznetsov
+# Copyright 2015, Kirill Kouznetsov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,18 +19,14 @@
 # limitations under the License.
 #
 
-def after_created
-  #self.license_key=key
-  self.key=self.name
-  self.name="<skipped>"
+def to_s
+  "#{resource_name}[<skipped>]"
 end
 
 actions :install, :configure, :disable, :uninstall
 
 default_action [:install, :configure]
 
-attribute :key, :name_attribute => true, :kind_of => String
-
-attr_accessor :key, :name
+attribute :key, name_attribute: true, kind_of: String
 
 # vim: ts=2 sts=2 sw=2 et sta

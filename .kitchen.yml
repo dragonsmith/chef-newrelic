@@ -13,3 +13,11 @@ suites:
     run_list:
       - recipe[newrelic::install]
     attributes: { 'newrelic': { 'enabled': true } }
+  - name: elastic
+    run_list:
+      - recipe[apt]
+      - recipe[ruby_build]
+      - recipe[newrelic_test::elastic]
+    attributes:
+      newrelic:
+        license_key: 'NYA_NYA'

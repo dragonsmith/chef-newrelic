@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+exec 2>&1
+
+HOME_PATH=<%= @options['home_path'] %>
+APP_PATH=<%= @options['app_path'] %>
+TARGET_USER=<%= @options['target_user'] %>
+
+cd $APP_PATH/current
+
+HOME=$HOME_PATH \
+exec chpst -u $TARGET_USER $HOME_PATH/.rbenv/bin/rbenv exec \
+bundle exec ./newrelic_elasticsearch_agent
+
+sleep 5

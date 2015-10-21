@@ -20,7 +20,7 @@
 #
 
 action :install do
-  nr_repo = apt_repository "newrelic" do
+  nr_repo = apt_repository 'newrelic' do
     distribution node['newrelic']['apt']['distribution']
     uri node['newrelic']['apt']['repo']
     components node['newrelic']['apt']['components']
@@ -29,7 +29,7 @@ action :install do
 
   nr_pack = package node['newrelic']['package_name']
 
-  if nr_repo.updated_by_last_action? or nr_pack.updated_by_last_action?
+  if nr_repo.updated_by_last_action? || nr_pack.updated_by_last_action?
     new_resource.updated_by_last_action(true)
   end
 end
@@ -39,67 +39,63 @@ action :configure do
     resource.resource_name == new_resource.resource_name
   end
 
-  bad_invocations = all_newrelic_res.select do |resource|
+  bad_invocations = all_newrelic_res.count do |resource|
     resource.key != all_newrelic_res.first.key
-  end.count
+  end
 
   if bad_invocations > 0
-    Chef::Log.warn("Resource #{new_resource} was invoked with different license keys for #{bad_invocations+1} times. This can break your system configuration!!! Please, be careful!!!")
+    Chef::Log.warn("Resource #{new_resource} was invoked with different license keys for #{bad_invocations + 1} times. This can break your system configuration!!! Please, be careful!!!")
   end
 
-  directory "/var/run/newrelic" do
-    owner "newrelic"
-    group "newrelic"
+  directory '/var/run/newrelic' do
+    owner 'newrelic'
+    group 'newrelic'
   end
 
-  directory "/etc/newrelic" do
-    owner "root"
-    group "root"
-    mode 00755
+  directory '/etc/newrelic' do
+    owner 'root'
+    group 'root'
+    mode '0755'
     action :create
   end
 
-  nr_temp = template "/etc/newrelic/nrsysmond.cfg" do
+  nr_temp = template '/etc/newrelic/nrsysmond.cfg' do
     cookbook 'newrelic'
-    source "nrsysmond.cfg.erb"
-    owner "root"
-    group "newrelic"
-    mode "640"
+    source 'nrsysmond.cfg.erb'
+    owner 'root'
+    group 'newrelic'
+    mode '0640'
     variables(
-      :license_key => new_resource.key
+      license_key: new_resource.key
     )
-    notifies :restart, "service[newrelic-sysmond]"
+    notifies :restart, 'service[newrelic-sysmond]'
   end
 
-  nr_serv = service "newrelic-sysmond" do
-    supports :status => true, :restart => true, :reload => true
-    action [ :enable, :start ]
+  nr_serv = service 'newrelic-sysmond' do
+    supports status: true, restart: true, reload: true
+    action [:enable, :start]
   end
 
-  if nr_temp.updated_by_last_action? or nr_serv.updated_by_last_action?
+  if nr_temp.updated_by_last_action? || nr_serv.updated_by_last_action?
     new_resource.updated_by_last_action(true)
   end
 end
 
 action :disable do
-  nr_serv = service "newrelic-sysmond" do
-    supports :status => true, :restart => true, :reload => true
-    action [ :disable, :stop ]
+  nr_serv = service 'newrelic-sysmond' do
+    supports status: true, restart: true, reload: true
+    action [:disable, :stop]
   end
 
-  if nr_serv.updated_by_last_action?
-    new_resource.updated_by_last_action(true)
-  end
+  new_resource.updated_by_last_action(true) if nr_serv.updated_by_last_action?
 end
 
 action :uninstall do
   nr_pack = package node['newrelic']['package_name'] do
-    action :uninstall
+    action :remove
   end
 
-  if nr_pack.updated_by_last_action?
-    new_resource.updated_by_last_action(true)
-  end
+  new_resource.updated_by_last_action(true) if nr_pack.updated_by_last_action?
 end
 
 # vim: ts=2 sts=2 sw=2 et sta

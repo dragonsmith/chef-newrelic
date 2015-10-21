@@ -93,7 +93,7 @@ action :start do
 
   path = @path
 
-  runit_rs = runit_service "elastic_#{new_resource.application_name}" do
+  runit_rs = runit_service "newrelic_elastic_#{new_resource.application_name}" do
     template_name 'elastic'
     cookbook 'newrelic'
     default_logger true
@@ -106,18 +106,18 @@ action :start do
   end
 
   # make runit service managable for onlinetours user.
-  sudo "elastic_#{new_resource.application_name}" do
+  sudo "newrelic_elastic_#{new_resource.application_name}" do
     user new_resource.owner
     commands [
-      "/usr/bin/sv start elastic_#{new_resource.application_name}",
-      "/usr/bin/sv stop elastic_#{new_resource.application_name}",
-      "/usr/bin/sv restart elastic_#{new_resource.application_name}",
-      "/usr/bin/sv term elastic_#{new_resource.application_name}",
-      "/usr/bin/sv kill elastic_#{new_resource.application_name}",
-      "/usr/bin/sv force-stop elastic_#{new_resource.application_name}",
-      "/usr/bin/sv force-restart elastic_#{new_resource.application_name}",
-      "/usr/bin/sv up elastic_#{new_resource.application_name}",
-      "/usr/bin/sv down elastic_#{new_resource.application_name}"
+      "/usr/bin/sv start newrelic_elastic_#{new_resource.application_name}",
+      "/usr/bin/sv stop newrelic_elastic_#{new_resource.application_name}",
+      "/usr/bin/sv restart newrelic_elastic_#{new_resource.application_name}",
+      "/usr/bin/sv term newrelic_elastic_#{new_resource.application_name}",
+      "/usr/bin/sv kill newrelic_elastic_#{new_resource.application_name}",
+      "/usr/bin/sv force-stop newrelic_elastic_#{new_resource.application_name}",
+      "/usr/bin/sv force-restart newrelic_elastic_#{new_resource.application_name}",
+      "/usr/bin/sv up newrelic_elastic_#{new_resource.application_name}",
+      "/usr/bin/sv down newrelic_elastic_#{new_resource.application_name}"
     ]
     nopasswd true
     only_if { new_resource.owner != 'root' }
@@ -127,11 +127,11 @@ action :start do
 end
 
 action :uninstall do
-  runit_service "elastic_#{new_resource.application_name}" do
+  runit_service "newrelic_elastic_#{new_resource.application_name}" do
     action [:stop, :disable]
   end
 
-  sudo "elastic_#{new_resource.application_name}" do
+  sudo "newrelic_elastic_#{new_resource.application_name}" do
     action :remove
   end
 

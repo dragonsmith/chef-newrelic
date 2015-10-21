@@ -2,8 +2,27 @@ DEPENDENCIES
   newrelic
     path: .
     metadata: true
+  newrelic_test
+    path: test/cookbooks/newrelic_test
+  ruby_build
 
 GRAPH
   apt (2.8.1)
-  newrelic (0.1.5)
+  java (1.35.0)
+  newrelic (0.1.7)
     apt (>= 0.0.0)
+    ruby_rbenv (>= 0.0.0)
+    runit (>= 0.0.0)
+    sudo (>= 0.0.0)
+  newrelic_test (0.1.0)
+    newrelic (>= 0.0.0)
+    ruby_build (>= 0.0.0)
+    ruby_rbenv (>= 0.0.0)
+  packagecloud (0.1.0)
+  ruby_build (0.8.0)
+  ruby_rbenv (1.0.0)
+    java (> 1.4.0)
+    ruby_build (>= 0.0.0)
+  runit (1.7.4)
+    packagecloud (>= 0.0.0)
+  sudo (2.7.2)

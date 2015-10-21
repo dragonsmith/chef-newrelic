@@ -25,7 +25,7 @@ def initialize(new_resource, run_context)
   if new_resource.path && new_resource.path != ''
     @path = new_resource.path
   else
-    @path = "/home/#{new_resource.owner}/#{new_resource.application_name}"
+    @path = "/home/#{new_resource.owner}/newrelic_elastic_#{new_resource.application_name}"
   end
 end
 

@@ -50,7 +50,7 @@ action :deploy do
       'config/newrelic_plugin.yml' => 'config/newrelic_plugin.yml'
     )
     action :deploy
-    restart_command 'touch tmp/restart.txt'
+    restart_command "/usr/bin/sudo /usr/bin/sv restart newrelic_elastic_#{new_resource.application_name}"
     scm_provider Chef::Provider::Git
 
     before_restart do
